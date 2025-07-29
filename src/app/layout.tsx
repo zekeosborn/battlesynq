@@ -17,7 +17,7 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: 'Battlesynq',
+  title: 'BattleSynq',
 };
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {

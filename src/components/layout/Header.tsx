@@ -17,7 +17,7 @@ export default function Header() {
     <header className="container mx-auto flex h-20 items-center justify-between px-6">
       <Link href="/" onClick={leaveSession} className="cursor-pointer">
         <h1 className="font-bebas-neue text-2xl font-bold md:text-3xl">
-          Battlesynq
+          BattleSynq
         </h1>
       </Link>
 
