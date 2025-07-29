@@ -168,22 +168,22 @@ export function placeShip(
 // Fire a shot at a specific position on the enemy grid
 export function fireShot(grid: Grid, position: Position): Grid | null {
   const { row, col } = position;
-  
+
   // Check if position is valid
   if (!isValidPosition(position)) return null;
-  
+
   const cell = grid.cells[row][col];
-  
+
   // Check if position has already been fired upon
   if (cell.isHit || cell.isMiss) return null;
-  
+
   const newGrid = cloneGrid(grid);
   const newCell = newGrid.cells[row][col];
-  
+
   if (cell.hasShip && cell.shipId) {
     // Hit!
     newCell.isHit = true;
-    
+
     // Update ship hit count
     const ship = newGrid.ships.find((s) => s.id === cell.shipId);
     if (ship) {
@@ -197,7 +197,7 @@ export function fireShot(grid: Grid, position: Position): Grid | null {
     // Miss!
     newCell.isMiss = true;
   }
-  
+
   return newGrid;
 }
 

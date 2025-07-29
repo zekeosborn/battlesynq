@@ -21,7 +21,7 @@ export default function Home() {
   useEffect(() => {
     if (!joinUrl) return;
     router.replace(joinUrl);
-  }, [joinUrl]);
+  }, [joinUrl, router]);
 
   if (!privyReady) return null;
 

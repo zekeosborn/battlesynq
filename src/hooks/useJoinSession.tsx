@@ -59,5 +59,6 @@ export default function useJoinSession({
     }
 
     leaveSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [embeddedWallet]);
 }
