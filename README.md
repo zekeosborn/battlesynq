@@ -19,7 +19,7 @@ npm install
 ```
 
 2. **Set up environment**  
-Create `.env.local`:
+Create `.env`:
 ```env
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id
 NEXT_PUBLIC_MULTISYNQ_APP_ID=your_multisynq_app_id  
