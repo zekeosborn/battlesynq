@@ -3,27 +3,17 @@
 import Gateway from '@/components/game/Gateway';
 import { Button } from '@/components/ui/button';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useCreateRandomSession, useJoinUrl } from 'react-together';
+import { useCreateRandomSession, useIsTogether } from 'react-together';
 
 export default function Home() {
-  const router = useRouter();
-  const { ready: privyReady, authenticated } = usePrivy();
+  const { authenticated } = usePrivy();
   const { ready: walletsReady, wallets } = useWallets();
   const createRandomSession = useCreateRandomSession();
-  const joinUrl = useJoinUrl();
+  const isTogether = useIsTogether();
 
   const embeddedWallet = walletsReady
     ? wallets.find((wallet) => wallet.walletClientType === 'privy')
     : undefined;
-
-  useEffect(() => {
-    if (!joinUrl) return;
-    router.replace(joinUrl);
-  }, [joinUrl, router]);
-
-  if (!privyReady) return null;
 
   if (!authenticated) {
     return (
@@ -33,7 +23,7 @@ export default function Home() {
     );
   }
 
-  if (joinUrl) return <Gateway />;
+  if (isTogether) return <Gateway />;
 
   return (
     <div className="mt-[calc(((100svh-36px)/2)-80px)] px-6">
