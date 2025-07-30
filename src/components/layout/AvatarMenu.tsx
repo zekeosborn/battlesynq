@@ -39,7 +39,9 @@ export default function AvatarMenu() {
     }
   };
 
-  if (!embeddedWallet) return null;
+  if (!embeddedWallet) {
+    return <div className="size-10 rounded-full bg-sky-200" />;
+  }
 
   return (
     <DropdownMenu>
@@ -60,7 +62,7 @@ export default function AvatarMenu() {
 
         {/* Balance */}
         <DropdownMenuItem className="focus:bg-transparent">
-          <CircleDollarSign className="text-sky-800" /> 0.25 MON
+          <CircleDollarSign className="text-sky-800" /> 0 MON
         </DropdownMenuItem>
 
         {/* Embedded Wallet Address*/}
@@ -86,7 +88,7 @@ export default function AvatarMenu() {
           className="cursor-pointer"
         >
           <KeyRound className="text-sky-800" />
-          <span>Private Key</span>
+          <span>Export Wallet</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator className="h-0.5" />

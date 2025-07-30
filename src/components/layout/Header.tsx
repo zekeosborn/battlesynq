@@ -21,12 +21,13 @@ export default function Header() {
         </h1>
       </Link>
 
-      {privyReady &&
-        (authenticated ? (
-          <AvatarMenu />
-        ) : (
-          <Button onClick={login}>Log In</Button>
-        ))}
+      {!privyReady ? (
+        <Button disabled>Log In</Button>
+      ) : authenticated ? (
+        <AvatarMenu />
+      ) : (
+        <Button onClick={login}>Log In</Button>
+      )}
     </header>
   );
 }
