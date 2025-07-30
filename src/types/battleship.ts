@@ -52,4 +52,5 @@ export interface GameState {
   phase: Phase;
   turn?: 'player1' | 'player2';
   winner?: 'player1' | 'player2';
+  nftMinted?: boolean;
 }

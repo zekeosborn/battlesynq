@@ -1,11 +1,9 @@
 'use client';
 
-import { cn, shortenAddress } from '@/lib/utils';
 import type { Cell, GameState, Player, Position } from '@/types/battleship';
 import { useWallets } from '@privy-io/react-auth';
-import { PartyPopper, Skull } from 'lucide-react';
-import { Button } from '../ui/button';
 import Board from './Board';
+import GameOver from './GameOver';
 import { GameStatus } from './GameStatus';
 
 interface Props {
@@ -15,6 +13,7 @@ interface Props {
   fireShot: (position: Position) => void;
   getCurrentPlayer: () => { player: Player; isPlayer1: boolean } | null;
   getEnemyPlayer: () => Player | null;
+  onNftMinted: () => void;
 }
 
 export default function Game({
@@ -24,18 +23,29 @@ export default function Game({
   fireShot,
   getCurrentPlayer,
   getEnemyPlayer,
+  onNftMinted,
 }: Props) {
   const { ready: walletsReady, wallets } = useWallets();
   const embeddedWallet = walletsReady
     ? wallets.find((wallet) => wallet.walletClientType === 'privy')
     : undefined;
 
-  if (!embeddedWallet || !player1 || !player2) return null;
-
   const currentPlayer = getCurrentPlayer();
   const enemyPlayer = getEnemyPlayer();
 
-  if (!currentPlayer || !enemyPlayer) return null;
+  if (
+    !embeddedWallet ||
+    !player1 ||
+    !player2 ||
+    !currentPlayer ||
+    !enemyPlayer
+  ) {
+    return (
+      <div className="mt-[calc(((100svh-24px)/2)-80px)]">
+        <p className="text-center">Loading...</p>
+      </div>
+    );
+  }
 
   const isMyTurn =
     (gameState.turn === 'player1' &&
@@ -50,55 +60,14 @@ export default function Game({
   };
 
   if (gameState.phase === 'ended') {
-    const isWinner =
-      (gameState.winner === 'player1' &&
-        embeddedWallet.address === player1.address) ||
-      (gameState.winner === 'player2' &&
-        embeddedWallet.address === player2.address);
-
     return (
-      <div
-        className={cn('px-6', {
-          'mt-[calc(((100svh-150px)/2)-80px)]': isWinner,
-          'mt-[calc(((100svh-100px)/2)-80px)]': !isWinner,
-        })}
-      >
-        <div className="mx-auto w-fit space-y-8 text-center">
-          <h1 className="flex items-center justify-center">
-            {isWinner ? (
-              <>
-                <PartyPopper size="40" className="mr-4" />
-                <span className="text-4xl font-bold">You Won!</span>
-              </>
-            ) : (
-              <>
-                <Skull size="40" className="mr-2" />
-                <span className="text-4xl font-bold">You Lost!</span>
-              </>
-            )}
-          </h1>
-
-          <p className="text-lg">
-            <span>
-              {gameState.winner === 'player1' ? 'Player 1 ' : 'Player 2 '}
-            </span>
-
-            <span>
-              (
-              {shortenAddress(
-                gameState.winner === 'player1'
-                  ? player1.address
-                  : player2.address,
-              )}
-              )
-            </span>
-
-            <span> wins the battle!</span>
-          </p>
-
-          {isWinner && <Button disabled>Claim NFT</Button>}
-        </div>
-      </div>
+      <GameOver
+        embeddedWallet={embeddedWallet}
+        gameState={gameState}
+        player1={player1}
+        player2={player2}
+        onNftMinted={onNftMinted}
+      />
     );
   }
 
