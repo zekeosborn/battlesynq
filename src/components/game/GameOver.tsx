@@ -41,9 +41,9 @@ export default function GameOver({
       abi: nftAbi,
       address: nftAddress,
       functionName: 'publicMint',
-      gas: 350_000n,
+      gas: 500_000n,
       maxFeePerGas: 100_000_000_000n,
-      maxPriorityFeePerGas: 2_000_000_000n,
+      maxPriorityFeePerGas: 5_000_000_000n,
     });
   };
 
