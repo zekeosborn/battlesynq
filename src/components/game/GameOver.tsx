@@ -79,12 +79,12 @@ export default function GameOver({
           {isWinner ? (
             <>
               <PartyPopper size="40" className="mr-4" />
-              <span className="text-4xl font-bold">You Won!</span>
+              <span className="text-4xl font-bold">You Win!</span>
             </>
           ) : (
             <>
               <Skull size="40" className="mr-2" />
-              <span className="text-4xl font-bold">You Lost!</span>
+              <span className="text-4xl font-bold">You Lose!</span>
             </>
           )}
         </h1>
