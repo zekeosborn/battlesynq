@@ -6,11 +6,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { shortenAddress } from '@/lib/utils';
+import { formatBalance, shortenAddress } from '@/lib/utils';
 import { useLogout, usePrivy, useWallets } from '@privy-io/react-auth';
 import Avatar from 'boring-avatars';
 import { CircleDollarSign, KeyRound, LogOut, Wallet } from 'lucide-react';
 import { useState } from 'react';
+import type { Address } from 'viem';
+import { useBalance } from 'wagmi';
 
 // Avatar dropdown menu showing balance, embedded wallet
 // as well as withdraw and logout actions
@@ -24,6 +26,14 @@ export default function AvatarMenu() {
   const embeddedWallet = walletsReady
     ? wallets.find((wallet) => wallet.walletClientType === 'privy')
     : undefined;
+
+  // Get the embedded wallet balance
+  const { data: balance } = useBalance({
+    address: embeddedWallet?.address as Address,
+    query: {
+      enabled: !!embeddedWallet,
+    },
+  });
 
   // Copies the embedded wallet address to clipboard
   const copyEmbeddedWallet = async (event: Event) => {
@@ -62,7 +72,15 @@ export default function AvatarMenu() {
 
         {/* Balance */}
         <DropdownMenuItem className="focus:bg-transparent">
-          <CircleDollarSign className="text-sky-800" /> 0 MON
+          <CircleDollarSign className="text-sky-800" />
+
+          {balance ? (
+            <span>
+              {formatBalance(balance.value, balance.decimals)} {balance.symbol}
+            </span>
+          ) : (
+            <span>Loading...</span>
+          )}
         </DropdownMenuItem>
 
         {/* Embedded Wallet Address*/}
